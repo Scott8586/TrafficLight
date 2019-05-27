@@ -16,3 +16,24 @@ These can be installed like so:
 sudo pip install paho-mqtt
 sudo pip install RPi.GPIO
 ```
+
+### Example
+
+Use the [example configuration file](mqtt.ini.example) to test the operation.
+The IP address is associated witha free MQTT broker, so don't publish anything
+sensitive.  The code needs to be run as root in order for the GPIO code to access
+/dev/mem under normal circumstances.
+
+```
+sudo python traffic_light.py -c mqtt.ini.example
+```
+
+Then communicate with a mosquitto_client:
+
+```
+mosquitto_pub -h 85.119.83.194 -t pi/demo/led -m green
+mosquitto_pub -h 85.119.83.194 -t pi/demo/led -m off
+```
+
+You should see your green traffic light LED turn on, then off with the different messages.
+
