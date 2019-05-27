@@ -1,5 +1,5 @@
 [mqtt]
-host=test.mosquitto.org
+host=85.119.83.194  # test.mosquitto.org, name doesn't seem to work
 port=1883
 #username=pi
 #password=raspberry
