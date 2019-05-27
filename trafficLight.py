@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 
 import paho.mqtt.client as mqtt
+import ConfigParser as configparser
 import RPi.GPIO as GPIO
 import signal
 import sys
+
+MQTT_INI="/etc/mqtt.ini"
+MQTT_SEC="mqtt"
 
 # Turn off all lights when user ends demo
 def allLightsOff():
@@ -14,7 +18,8 @@ def allLightsOff():
 
 def on_connect(client, userdata, flags, rc):
     print ("Connected with rc: " + str(rc))
-    client.subscribe("srp/demo/led")
+    #client.subscribe("srp/demo/led")
+    client.subscribe(userdata)
 
 def on_message(client, userdata, msg):
     print ("Topic: "+ msg.topic+"\nMessage: "+str(msg.payload))
@@ -37,17 +42,18 @@ def on_message(client, userdata, msg):
         #print("  Red off!")
         GPIO.output(9, False)
         
+mqttConf = configparser.ConfigParser()
+mqttConf.read(MQTT_INI)
 
-client = mqtt.Client()
+client = mqtt.Client(userdata=mqttConf.get(MQTT_SEC, 'topic'))
 client.on_connect = on_connect
 client.on_message = on_message
 
 #if MQTT_USER is not None and MQTT_PASS is not None:
 #    print('Using username: {un} and password: {pw}'.format(un=MQTT_USER, pw='*' * len(MQTT_PASS)))
 #client.username_pw_set(username=MQTT_USER, password=MQTT_PASS)
-client.username_pw_set(username="moe", password="kicker87")
-
-client.connect("192.168.37.161", 1883, 60)
+client.username_pw_set(username=mqttConf.get(MQTT_SEC, 'username'), password=mqttConf.get(MQTT_SEC, 'password'))
+client.connect(mqttConf.get(MQTT_SEC, 'host'), int(mqttConf.get(MQTT_SEC, 'port')), 60)
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(9, GPIO.OUT)
