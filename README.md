@@ -9,5 +9,7 @@ Python code for controlling a Rasperry Pi [Traffic Light LED](https://www.amazon
 
 These can be installed like so:
 
-`sudo pip install paho-mqtt`
-`sudo pip install RPi.GPIO`
+```
+sudo pip install paho-mqtt
+sudo pip install RPi.GPIO
+```
