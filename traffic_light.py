@@ -74,10 +74,10 @@ def main():
     mqtt_client.on_connect = on_connect
     mqtt_client.on_message = on_message
 
-    username = mqtt_conf.get(args.section, 'username')
-    password = mqtt_conf.get(args.section, 'password')
-
-    if username is not None and password is not None:
+    if (mqtt_conf.has_option(args.section, 'username') and
+            mqtt_conf.has_option(args.section, 'password')):
+        username = mqtt_conf.get(args.section, 'username')
+        password = mqtt_conf.get(args.section, 'password')
         mqtt_client.username_pw_set(username=username, password=password)
 
     host = mqtt_conf.get(args.section, 'host')
