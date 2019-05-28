@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Scott8586/TrafficLight.svg?branch=master)](https://travis-ci.org/Scott8586/TrafficLight)
+
 ## MQTT Traffic Light
 
 Python code for controlling a Rasperry Pi [Traffic Light LED](https://www.amazon.com/Pi-Traffic-Light-Raspberry-pack/dp/B00RIIGD30) stack
