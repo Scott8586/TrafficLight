@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/Scott8586/TrafficLight.svg?branch=master)](https://travis-ci.org/Scott8586/TrafficLight)
-
-[![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/Scott8586/TrafficLight)
+[![Build Status](https://travis-ci.org/Scott8586/TrafficLight.svg?branch=master)](https://travis-ci.org/Scott8586/TrafficLight)  [![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/Scott8586/TrafficLight)
 
 ## MQTT Traffic Light
 
