@@ -25,8 +25,7 @@ def all_lights_off():
     """Turn off all lights when program shuts down"""
     GPIO.output(9, False)
     GPIO.output(10, False)
-    GPIO.output(11, False)
-    GPIO.cleanup()
+    GPIO.output(11, False)  
 
 def on_connect(client, userdata, flags, rc):
     """On connecting to the MQTT broker, subscribe to a topic in userdata"""
@@ -37,24 +36,20 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     """Process a message and take action"""
     print "Topic: " + msg.topic + "\nMessage: "+ str(msg.payload)
+    if "off" in msg.payload:
+        all_lights_off()
+        
     if "green" in msg.payload:
         #print("  Green on!")
         GPIO.output(11, True)
-    else:
-        #print("  Green off!")
-        GPIO.output(11, False)
+   
     if "yellow" in msg.payload:
         #print("  Yellow on!")
         GPIO.output(10, True)
-    else:
-        #print("  Yellow off!")
-        GPIO.output(10, False)
+
     if "red" in msg.payload:
         #print("  Red on!")
         GPIO.output(9, True)
-    else:
-        #print("  Red off!")
-        GPIO.output(9, False)
 
 def main():
     """Main program function, parse arguments, read configuration,
@@ -94,7 +89,9 @@ def main():
     except KeyboardInterrupt:
         all_lights_off()
         mqtt_client.disconnect()
-        print "Exiting main thread"
+    
+    GPIO.cleanup()
+    print "Exiting main thread"
 
 if __name__ == '__main__':
     main()
