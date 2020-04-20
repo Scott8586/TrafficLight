@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Python script for operating on traffic lights module for a raspberry pi via MQTT
 """
@@ -7,9 +7,11 @@ Python script for operating on traffic lights module for a raspberry pi via MQTT
 # pylint: disable=unused-argument
 
 import argparse
-import ConfigParser as configparser
-import RPi.GPIO as GPIO
+import configparser
+
 import paho.mqtt.client as mqtt
+
+import RPi.GPIO as GPIO
 
 MQTT_INI = "/etc/mqtt.ini"
 MQTT_SEC = "mqtt"
@@ -25,24 +27,27 @@ def all_lights_off():
     """Turn off all lights when program shuts down"""
     GPIO.output(9, False)
     GPIO.output(10, False)
-    GPIO.output(11, False)  
+    GPIO.output(11, False)
 
-def on_connect(client, userdata, flags, rc):
+def on_connect(client, userdata, flags, return_code):
     """On connecting to the MQTT broker, subscribe to a topic in userdata"""
-    print "Connected with rc: " + str(rc)
+
+    print("Connected with rc: " + str(return_code))
     #client.subscribe("srp/demo/led")
     client.subscribe(userdata)
 
 def on_message(client, userdata, msg):
     """Process a message and take action"""
-    print "Topic: " + msg.topic + "\nMessage: "+ str(msg.payload)
+
+    print("Topic: " + msg.topic + "\nMessage: "+ str(msg.payload))
+
     if "off" in msg.payload:
         all_lights_off()
-        
+
     if "green" in msg.payload:
         #print("  Green on!")
         GPIO.output(11, True)
-   
+
     if "yellow" in msg.payload:
         #print("  Yellow on!")
         GPIO.output(10, True)
@@ -54,6 +59,7 @@ def on_message(client, userdata, msg):
 def main():
     """Main program function, parse arguments, read configuration,
     setup client, listen for messages"""
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', default=MQTT_INI, help="configuration file")
     parser.add_argument('-s', '--section', default=MQTT_SEC, help="configuration file section")
@@ -89,9 +95,9 @@ def main():
     except KeyboardInterrupt:
         all_lights_off()
         mqtt_client.disconnect()
-    
+
     GPIO.cleanup()
-    print "Exiting main thread"
+    print("Exiting main thread")
 
 if __name__ == '__main__':
     main()
