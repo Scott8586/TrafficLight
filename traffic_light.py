@@ -14,7 +14,7 @@ import paho.mqtt.client as mqtt
 import RPi.GPIO as GPIO
 
 MQTT_INI = "/etc/mqtt.ini"
-MQTT_SEC = "mqtt"
+MQTT_SEC = "trafficlight"
 
 def setup_lights():
     """ Setup GPIO output"""
@@ -32,27 +32,29 @@ def all_lights_off():
 def on_connect(client, userdata, flags, return_code):
     """On connecting to the MQTT broker, subscribe to a topic in userdata"""
 
-    print("Connected with rc: " + str(return_code))
+#    print("Connected with rc: " + str(return_code))
     #client.subscribe("srp/demo/led")
     client.subscribe(userdata)
 
 def on_message(client, userdata, msg):
     """Process a message and take action"""
 
-    print("Topic: " + msg.topic + "\nMessage: "+ str(msg.payload))
+#    print("Topic: " + msg.topic + "\nMessage: "+ str(msg.payload))
+    message = msg.payload.decode()
 
-    if "off" in msg.payload:
+    if message == "off":
+        #print("   All Off!")
         all_lights_off()
 
-    if "green" in msg.payload:
+    if message == "green":
         #print("  Green on!")
         GPIO.output(11, True)
 
-    if "yellow" in msg.payload:
+    if message ==  "yellow":
         #print("  Yellow on!")
         GPIO.output(10, True)
 
-    if "red" in msg.payload:
+    if message == "red":
         #print("  Red on!")
         GPIO.output(9, True)
 
